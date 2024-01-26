@@ -29,22 +29,13 @@ public class Sector : MonoBehaviour
     
     private void Update() 
     {
-        if (Input.touchCount > 0) 
-        {
-            Touch touch = Input.GetTouch(0);
-            Vector2 touchPosition = _camera.ScreenToWorldPoint(touch.position);
-            RaycastHit2D hit = Physics2D.Raycast(touchPosition, Vector2.zero);
-
-            if (hit.collider.gameObject == gameObject)
-            {
-                OnSelectSector();
-            }
-        }
-        else if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             Vector2 touchPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
             
             RaycastHit2D hit = Physics2D.Raycast(touchPosition, Vector2.zero);
+            
+            if (hit.collider == null) return;
             
             if (hit.collider.gameObject == gameObject)
             {
