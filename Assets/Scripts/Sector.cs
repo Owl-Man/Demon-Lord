@@ -17,7 +17,7 @@ public class Sector : MonoBehaviour
 
     public void OnSelectSector()
     {
-        if (_outline.IsEnabled)
+        if (_outline.isEnabled)
         {
             _outline.DisableHighlight();
         }

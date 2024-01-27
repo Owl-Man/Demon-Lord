@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[ExecuteAlways]
 public class ObjectHighlight : MonoBehaviour
 {
     private LineRenderer _lineRenderer;
@@ -7,7 +8,7 @@ public class ObjectHighlight : MonoBehaviour
 
     private Vector2[] _vertices;
 
-    public bool IsEnabled { get; private set; }
+    public bool isEnabled;
 
     private void Awake()
     {
@@ -20,13 +21,15 @@ public class ObjectHighlight : MonoBehaviour
         _vertices = _polygonCollider2D.points;
 
         _lineRenderer.positionCount = _vertices.Length;
+
+        isEnabled = false;
     }
 
     private void Update() => UpdateHighlight();
 
     private void UpdateHighlight()
     {
-        if (!IsEnabled) return;
+        if (!isEnabled) return;
         
         _vertices = _polygonCollider2D.points;
         
@@ -40,12 +43,12 @@ public class ObjectHighlight : MonoBehaviour
     public void EnableHighlight()
     {
         _lineRenderer.enabled = true;
-        IsEnabled = true;
+        isEnabled = true;
     }
 
     public void DisableHighlight()
     {
         _lineRenderer.enabled = false;
-        IsEnabled = false;
+        isEnabled = false;
     }
 }
