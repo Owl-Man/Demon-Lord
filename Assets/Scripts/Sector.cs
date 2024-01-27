@@ -27,7 +27,7 @@ public class Sector : MonoBehaviour
         }
     }
     
-    private void Update() 
+    private void Update()
     {
         if (Input.GetMouseButtonUp(0))
         {
