@@ -3,7 +3,8 @@
 public class Sector : MonoBehaviour
 {
     [SerializeField] private ushort armyCount;
-
+    [SerializeField] private bool isSectorOccupied;
+    
     private Camera _camera;
     private ObjectHighlight _outline;
 
@@ -17,14 +18,17 @@ public class Sector : MonoBehaviour
 
     public void OnSelectSector()
     {
-        if (_outline.isEnabled)
-        {
-            _outline.DisableHighlight();
-        }
-        else
-        {
-            _outline.EnableHighlight();
-        }
+        SectorsManager.Instance.ChoseTheSector(this);
+    }
+
+    public void EnableSectorInteraction()
+    {
+        _outline.EnableHighlight();
+    }
+
+    public void DisableSectorInteraction()
+    {
+        _outline.DisableHighlight();
     }
     
     private void Update()
