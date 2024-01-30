@@ -10,8 +10,9 @@ namespace SectorsSystem
         [SerializeField] private Slider troopsSlider;
         [SerializeField] private TMP_Text troopsCount;
         [SerializeField] private GameObject controlBtns;
+        [SerializeField] private Button acceptBtn;
 
-        public Sector from, to;
+        private Sector from, to;
 
         public static SectorsTroopsMove Instance;
 
@@ -19,21 +20,32 @@ namespace SectorsSystem
 
         public bool isMoveModeOn { get; private set; }
         
-        public void SliderArmyUpdate() => troopsCount.text = Convert.ToString(troopsSlider.value);
+        public void SliderTroopsUpdate() => troopsCount.text = Convert.ToString(troopsSlider.value);
 
+        public void SetDestination(Sector sector)
+        {
+            to = sector;
+            acceptBtn.interactable = true;
+        }
+        
         public void ActivateMoveMode()
         {
             isMoveModeOn = true;
             controlBtns.SetActive(true);
 
+            SectorsManager.Instance.PrepareForMovingTroops(out from);
+
             troopsSlider.minValue = 1;
             troopsSlider.maxValue = from.troopsCount;
+
+            acceptBtn.interactable = false;
         }
 
-        public void CancelTheMove()
+        public void DisableMoveMode()
         {
             isMoveModeOn = false;
             controlBtns.SetActive(false);
+            SectorsManager.Instance.EndMovingTroops();
         }
 
         public void AcceptMove()
@@ -41,6 +53,8 @@ namespace SectorsSystem
             ushort troops = Convert.ToUInt16(troopsSlider.value);
             from.troopsCount -= troops;
             to.troopsCount += troops;
+            
+            DisableMoveMode();
         }
     }
 }

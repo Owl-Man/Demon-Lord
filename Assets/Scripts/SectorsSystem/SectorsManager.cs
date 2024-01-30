@@ -5,7 +5,7 @@ namespace SectorsSystem
     public class SectorsManager : MonoBehaviour
     {
         [SerializeField] private SectorsInfo sectorsInfo;
-        [SerializeField] private Sector chosenSector;
+        public Sector ChosenSector { get; private set; }
 
         public Sector sectorOnWhichWasPointer;
         
@@ -13,39 +13,62 @@ namespace SectorsSystem
 
         private void Awake() => Instance = this;
 
+        public void PrepareForMovingTroops(out Sector sector)
+        {
+            ChosenSector.DisableSectorInteraction();
+            sectorsInfo.Close();
+
+            sector = ChosenSector;
+            ChosenSector = null;
+        }
+
+        public void EndMovingTroops()
+        {
+            if (ChosenSector != null)
+            {
+                ChosenSector.DisableSectorInteraction();
+                ChosenSector = null;
+            }
+        }
+
         public void ChoseTheSector(Sector sector)
         {
             if (SectorsTroopsMove.Instance.isMoveModeOn)
             {
-                SectorsTroopsMove.Instance.from = chosenSector;
-                SectorsTroopsMove.Instance.to = sector;
+                if (ChosenSector != null) ChosenSector.DisableSectorInteraction();
+                
+                SectorsTroopsMove.Instance.SetDestination(sector);
+                
+                sector.EnableSectorInteraction();
+
+                ChosenSector = sector;
                 
                 return;
             }
             
-            if (chosenSector == null) //Choose first sector
+            if (ChosenSector == null) //Choose first sector
             {
-                chosenSector = sector;
-                chosenSector.EnableSectorInteraction();
+                ChosenSector = sector;
+                ChosenSector.EnableSectorInteraction();
             
-                sectorsInfo.Show(chosenSector.troopsCount);
+                sectorsInfo.Show(ChosenSector.troopsCount);
             }
             else if (sector.isSectorOccupied) 
             {
-                if (chosenSector == sector)
+                if (ChosenSector == sector)
                 {
-                    chosenSector.DisableSectorInteraction();
-                    chosenSector = null;
+                    ChosenSector.DisableSectorInteraction();
+                    ChosenSector = null;
 
                     sectorsInfo.Close();
                 }
                 else
                 {
-                    chosenSector.DisableSectorInteraction();
-                    chosenSector = sector;
-                    chosenSector.EnableSectorInteraction();
+                    ChosenSector.DisableSectorInteraction();
+                    ChosenSector = sector;
+                    ChosenSector.EnableSectorInteraction();
 
-                    sectorsInfo.Show(chosenSector.troopsCount);
+                    sectorsInfo.Show(ChosenSector.troopsCount);
                 }
             }
         }
