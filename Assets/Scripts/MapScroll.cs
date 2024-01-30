@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MapScroll : MonoBehaviour
 {
@@ -13,8 +14,14 @@ public class MapScroll : MonoBehaviour
     private Vector3 _initialMousePosition;
     private Vector3 _initialObjectPosition;
 
+    private EventSystem _eventSystem;
+
+    private void Start() => _eventSystem = EventSystem.current;
+
     private void Update()
     {
+        if (_eventSystem.IsPointerOverGameObject()) return;
+        
         if (Input.GetMouseButtonDown(0))
         {
             _initialMousePosition = Input.mousePosition;

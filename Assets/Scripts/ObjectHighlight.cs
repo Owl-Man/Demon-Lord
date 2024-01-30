@@ -18,10 +18,6 @@ public class ObjectHighlight : MonoBehaviour
 
     private void Start()
     {
-        _vertices = _polygonCollider2D.points;
-
-        _lineRenderer.positionCount = _vertices.Length;
-
         isEnabled = false;
     }
 
@@ -32,7 +28,9 @@ public class ObjectHighlight : MonoBehaviour
         if (!isEnabled) return;
         
         _vertices = _polygonCollider2D.points;
-        
+
+        _lineRenderer.positionCount = _vertices.Length;
+
         for (int i = 0; i < _vertices.Length; i++)
         {
             Vector3 position = new Vector3(_vertices[i].x, _vertices[i].y, 1);
