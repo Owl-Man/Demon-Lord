@@ -15,12 +15,20 @@ namespace SectorsSystem
 
         public void ChoseTheSector(Sector sector)
         {
+            if (SectorsTroopsMove.Instance.isMoveModeOn)
+            {
+                SectorsTroopsMove.Instance.from = chosenSector;
+                SectorsTroopsMove.Instance.to = sector;
+                
+                return;
+            }
+            
             if (chosenSector == null) //Choose first sector
             {
                 chosenSector = sector;
                 chosenSector.EnableSectorInteraction();
             
-                sectorsInfo.Show(chosenSector.armyCount.ToString());
+                sectorsInfo.Show(chosenSector.troopsCount);
             }
             else if (sector.isSectorOccupied) 
             {
@@ -37,12 +45,8 @@ namespace SectorsSystem
                     chosenSector = sector;
                     chosenSector.EnableSectorInteraction();
 
-                    sectorsInfo.Show(chosenSector.armyCount.ToString());
+                    sectorsInfo.Show(chosenSector.troopsCount);
                 }
-            }
-            else
-            {
-                //Attack other sector
             }
         }
     }

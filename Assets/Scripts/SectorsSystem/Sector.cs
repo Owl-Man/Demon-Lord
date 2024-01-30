@@ -5,7 +5,7 @@ namespace SectorsSystem
 {
     public class Sector : MonoBehaviour
     {
-        public ushort armyCount;
+        public ushort troopsCount;
 
         public bool isSectorOccupied;
     

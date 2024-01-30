@@ -20,7 +20,7 @@ public class MapScroll : MonoBehaviour
 
     private void Update()
     {
-        if (_eventSystem.IsPointerOverGameObject()) return;
+        //if (_eventSystem.IsPointerOverGameObject()) return;
         
         if (Input.GetMouseButtonDown(0))
         {

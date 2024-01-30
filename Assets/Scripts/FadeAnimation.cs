@@ -7,7 +7,7 @@ public class FadeAnimation : MonoBehaviour
 {
     [Header("Fading")] 
     
-    [Tooltip("Delay between animation steps. The LOWER the value, the FASTER the animation"), SerializeField] 
+    [Tooltip("Delay between animation steps. The LOWER the value, the FASTER the animation\n \nvalue > 0"), SerializeField] 
     private float fadingSubTime = 0.01f;
 
     [Tooltip("The value of changing the appearance of an object in one step." +
@@ -15,7 +15,7 @@ public class FadeAnimation : MonoBehaviour
              " However, with LARGE values, the animation may not be smooth, but too SHARP" +
              " - the number of frames in the animation will decrease. The lower the value," +
              " the smoother the animation. \n \nIt is recommended to change this value only if" +
-             " it is impossible to adjust only the fadingSubTime"), SerializeField]
+             " it is impossible to adjust only the fadingSubTime\n \nvalue > 0"), SerializeField]
     private float fadingStep = 0.01f;
 
     [Tooltip("If disabled, the animation will be played completely regardless of the time scale." +
