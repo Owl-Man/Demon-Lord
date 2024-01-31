@@ -14,13 +14,19 @@ public class MapScroll : MonoBehaviour
     private Vector3 _initialMousePosition;
     private Vector3 _initialObjectPosition;
 
+    [HideInInspector] public bool isScrollActiveAboveUI = true;
+
     private EventSystem _eventSystem;
+
+    public static MapScroll Instance;
+
+    private void Awake() => Instance = this;
 
     private void Start() => _eventSystem = EventSystem.current;
 
     private void Update()
     {
-        //if (_eventSystem.IsPointerOverGameObject()) return;
+        if (!IsScrollActive()) return;
         
         if (Input.GetMouseButtonDown(0))
         {
@@ -40,5 +46,12 @@ public class MapScroll : MonoBehaviour
             
             transform.position = new Vector3(newPositionX, newPositionY, _initialObjectPosition.z);
         }
+    }
+
+    private bool IsScrollActive()
+    {
+        if (!isScrollActiveAboveUI && _eventSystem.IsPointerOverGameObject()) return false;
+
+        return true;
     }
 }

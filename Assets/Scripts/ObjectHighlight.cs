@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using SectorsSystem;
+using UnityEngine;
 
 [ExecuteAlways]
 public class ObjectHighlight : MonoBehaviour
@@ -7,6 +9,8 @@ public class ObjectHighlight : MonoBehaviour
     private PolygonCollider2D _polygonCollider2D;
 
     private Vector2[] _vertices;
+
+    [SerializeField] private float _defaultLineWidth;
 
     public bool isEnabled;
 
@@ -19,6 +23,8 @@ public class ObjectHighlight : MonoBehaviour
     private void Start()
     {
         isEnabled = false;
+
+        _defaultLineWidth = _lineRenderer.startWidth;
     }
 
     private void Update() => UpdateHighlight();
@@ -38,15 +44,57 @@ public class ObjectHighlight : MonoBehaviour
         }
     }
 
-    public void EnableHighlight()
+    private IEnumerator Pulsing()
+    {
+        while (true)
+        {
+            while (_lineRenderer.startWidth >= 0.04f)
+            {
+                _lineRenderer.startWidth -= 0.001f;
+                yield return new WaitForSeconds(0.008f);
+            }
+
+            yield return new WaitForSeconds(0.2f);
+
+            while (_lineRenderer.startWidth <= _defaultLineWidth + 0.02f)
+            {
+                _lineRenderer.startWidth += 0.001f;
+                yield return new WaitForSeconds(0.008f);
+            }
+            
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    public void EnableHighlight(bool isWithPulse, bool isSectorOccupied)
     {
         _lineRenderer.enabled = true;
         isEnabled = true;
+
+        if (isSectorOccupied)
+        {
+            _lineRenderer.startColor = SectorsManager.Instance.playerSectorColor;
+            _lineRenderer.endColor = SectorsManager.Instance.playerSectorColor;
+        }
+        else
+        {
+            _lineRenderer.startColor = SectorsManager.Instance.enemySectorColor;
+            _lineRenderer.endColor = SectorsManager.Instance.enemySectorColor;
+        }
+
+        if (isWithPulse)
+        {
+            StopAllCoroutines();
+            StartCoroutine(Pulsing());
+        }
     }
 
     public void DisableHighlight()
     {
         _lineRenderer.enabled = false;
         isEnabled = false;
+
+        _lineRenderer.startWidth = _defaultLineWidth;
+        StopAllCoroutines();
     }
 }

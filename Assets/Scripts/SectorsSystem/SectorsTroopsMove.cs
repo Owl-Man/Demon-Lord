@@ -27,6 +27,8 @@ namespace SectorsSystem
             to = sector;
             acceptBtn.interactable = true;
         }
+
+        public Sector GetFromSector() => from;
         
         public void ActivateMoveMode()
         {
@@ -34,6 +36,8 @@ namespace SectorsSystem
             controlBtns.SetActive(true);
 
             SectorsManager.Instance.PrepareForMovingTroops(out from);
+
+            MapScroll.Instance.isScrollActiveAboveUI = false;
 
             troopsSlider.minValue = 1;
             troopsSlider.maxValue = from.troopsCount;
@@ -45,15 +49,31 @@ namespace SectorsSystem
         {
             isMoveModeOn = false;
             controlBtns.SetActive(false);
+            MapScroll.Instance.isScrollActiveAboveUI = true;
             SectorsManager.Instance.EndMovingTroops();
         }
 
         public void AcceptMove()
         {
-            ushort troops = Convert.ToUInt16(troopsSlider.value);
-            from.troopsCount -= troops;
-            to.troopsCount += troops;
+            int troops = Convert.ToInt32(troopsSlider.value);
             
+            from.troopsCount -= troops;
+            
+            if (to.isSectorOccupied)
+            {
+                to.troopsCount += troops;
+            }
+            else //Attack
+            {
+                to.troopsCount -= troops;
+
+                if (to.troopsCount < 0)
+                {
+                    to.troopsCount *= -1;
+                    to.isSectorOccupied = true;
+                }
+            }
+
             DisableMoveMode();
         }
     }

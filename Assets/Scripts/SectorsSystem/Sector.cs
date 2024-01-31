@@ -5,7 +5,7 @@ namespace SectorsSystem
 {
     public class Sector : MonoBehaviour
     {
-        public ushort troopsCount;
+        public int troopsCount;
 
         public bool isSectorOccupied;
     
@@ -28,9 +28,9 @@ namespace SectorsSystem
             SectorsManager.Instance.ChoseTheSector(this);
         }
 
-        public void EnableSectorInteraction()
+        public void EnableSectorInteraction(bool isWithPulse)
         {
-            _outline.EnableHighlight();
+            _outline.EnableHighlight(isWithPulse, isSectorOccupied);
         }
 
         public void DisableSectorInteraction()

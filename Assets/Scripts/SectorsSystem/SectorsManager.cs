@@ -4,6 +4,8 @@ namespace SectorsSystem
 {
     public class SectorsManager : MonoBehaviour
     {
+        public Color playerSectorColor, enemySectorColor;
+        
         [SerializeField] private SectorsInfo sectorsInfo;
         public Sector ChosenSector { get; private set; }
 
@@ -35,11 +37,13 @@ namespace SectorsSystem
         {
             if (SectorsTroopsMove.Instance.isMoveModeOn)
             {
+                if (sector == SectorsTroopsMove.Instance.GetFromSector()) return;
+                
                 if (ChosenSector != null) ChosenSector.DisableSectorInteraction();
                 
                 SectorsTroopsMove.Instance.SetDestination(sector);
                 
-                sector.EnableSectorInteraction();
+                sector.EnableSectorInteraction(true);
 
                 ChosenSector = sector;
                 
@@ -49,27 +53,24 @@ namespace SectorsSystem
             if (ChosenSector == null) //Choose first sector
             {
                 ChosenSector = sector;
-                ChosenSector.EnableSectorInteraction();
+                ChosenSector.EnableSectorInteraction(false);
             
                 sectorsInfo.Show(ChosenSector.troopsCount);
             }
-            else if (sector.isSectorOccupied) 
+            else if (ChosenSector == sector)
             {
-                if (ChosenSector == sector)
-                {
-                    ChosenSector.DisableSectorInteraction();
-                    ChosenSector = null;
+                ChosenSector.DisableSectorInteraction();
+                ChosenSector = null;
 
-                    sectorsInfo.Close();
-                }
-                else
-                {
-                    ChosenSector.DisableSectorInteraction();
-                    ChosenSector = sector;
-                    ChosenSector.EnableSectorInteraction();
+                sectorsInfo.Close();
+            }
+            else
+            {
+                ChosenSector.DisableSectorInteraction();
+                ChosenSector = sector;
+                ChosenSector.EnableSectorInteraction(false);
 
-                    sectorsInfo.Show(ChosenSector.troopsCount);
-                }
+                sectorsInfo.Show(ChosenSector.troopsCount);
             }
         }
     }

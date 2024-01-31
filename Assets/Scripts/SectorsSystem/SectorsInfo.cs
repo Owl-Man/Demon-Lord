@@ -11,7 +11,7 @@ namespace SectorsSystem
         
         [SerializeField] private Button moveTroopsBtn;
 
-        public void Show(ushort troopsCount)
+        public void Show(int troopsCount)
         {
             infoPanel.SetActive(true);
             info.text = troopsCount.ToString();
