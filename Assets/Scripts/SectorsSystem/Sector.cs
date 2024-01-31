@@ -71,5 +71,15 @@ namespace SectorsSystem
                 }
             }
         }
+
+        
+        //Neighbour sectors
+        private void OnTriggerEnter2D(Collider2D col)
+        {
+            if (col.gameObject.CompareTag("Sector"))
+            {
+                print(troopsCount + " - " + col.gameObject.GetComponent<Sector>().troopsCount);
+            }
+        }
     }
 }
