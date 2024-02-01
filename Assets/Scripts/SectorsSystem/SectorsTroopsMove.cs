@@ -10,8 +10,14 @@ namespace SectorsSystem
         [SerializeField] private Slider troopsSlider;
         [SerializeField] private TMP_Text troopsCount;
         [SerializeField] private GameObject controlBtns;
+
+        [SerializeField] private Transform mainCanvas;
+        
         [SerializeField] private Button acceptBtn;
 
+        [SerializeField] private GameObject arrowPrefab;
+        private GameObject _currentArrow;
+        
         private Sector from, to;
 
         public static SectorsTroopsMove Instance;
@@ -24,7 +30,15 @@ namespace SectorsSystem
 
         public void SetDestination(Sector sector)
         {
+            if (_currentArrow == null)
+            {
+                _currentArrow = Instantiate(arrowPrefab, from.transform.position, Quaternion.identity);
+                _currentArrow.transform.SetParent(mainCanvas);
+            }
+
             to = sector;
+            _currentArrow.GetComponent<Arrow>().Activate(from.transform, to.transform);
+            
             acceptBtn.interactable = true;
         }
 
@@ -57,6 +71,9 @@ namespace SectorsSystem
         {
             int troops = Convert.ToInt32(troopsSlider.value);
             
+            Destroy(_currentArrow);
+            _currentArrow = null;
+
             from.troopsCount -= troops;
             
             if (to.isSectorOccupied)
