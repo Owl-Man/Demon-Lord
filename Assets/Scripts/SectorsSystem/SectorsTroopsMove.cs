@@ -1,4 +1,5 @@
 ﻿using System;
+using ArrowSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,14 +11,16 @@ namespace SectorsSystem
         [SerializeField] private Slider troopsSlider;
         [SerializeField] private TMP_Text troopsCount;
         [SerializeField] private GameObject controlBtns;
-
-        [SerializeField] private Transform mainCanvas;
         
         [SerializeField] private Button acceptBtn;
+
+        [SerializeField] private float moveDuration;
         
         private Sector from, to;
 
         public static SectorsTroopsMove Instance;
+
+        private int troops;
 
         private void Awake() => Instance = this;
 
@@ -53,19 +56,31 @@ namespace SectorsSystem
             acceptBtn.interactable = false;
         }
 
-        public void DisableMoveMode()
+        public void CancelMoveMode()
+        {
+            DisableMoveMode();
+            ArrowCreator.Instance.DestroyArrow();
+        }
+
+        private void DisableMoveMode()
         {
             isMoveModeOn = false;
             controlBtns.SetActive(false);
             MapScroll.Instance.isScrollActiveAboveUI = true;
             SectorsManager.Instance.EndMovingTroops();
-            ArrowCreator.Instance.DestroyArrow();
         }
 
         public void AcceptMove()
         {
-            int troops = Convert.ToInt32(troopsSlider.value);
+            troops = Convert.ToInt32(troopsSlider.value);
+            
+            ArrowCreator.Instance.MoveTroughArrow(moveDuration);
 
+            DisableMoveMode();
+        }
+
+        public void CalculateTroopsMovingResult()
+        {
             from.troopsCount -= troops;
             
             if (to.isSectorOccupied)
@@ -82,8 +97,6 @@ namespace SectorsSystem
                     to.isSectorOccupied = true;
                 }
             }
-
-            DisableMoveMode();
         }
     }
 }
