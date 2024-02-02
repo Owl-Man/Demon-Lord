@@ -5,6 +5,7 @@ namespace SectorsSystem
 {
     public class Sector : MonoBehaviour
     {
+        public Transform mainHouse;
         public Sector[] neighbourSectors;
         public int troopsCount;
 

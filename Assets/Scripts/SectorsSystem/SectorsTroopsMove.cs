@@ -14,9 +14,6 @@ namespace SectorsSystem
         [SerializeField] private Transform mainCanvas;
         
         [SerializeField] private Button acceptBtn;
-
-        [SerializeField] private GameObject arrowPrefab;
-        private GameObject _currentArrow;
         
         private Sector from, to;
 
@@ -30,15 +27,12 @@ namespace SectorsSystem
 
         public void SetDestination(Sector sector)
         {
-            if (_currentArrow == null)
-            {
-                _currentArrow = Instantiate(arrowPrefab, from.transform.position, Quaternion.identity);
-                _currentArrow.transform.SetParent(mainCanvas);
-            }
-
             to = sector;
-            _currentArrow.GetComponent<Arrow>().Activate(from.transform, to.transform);
             
+            //_currentArrow.GetComponent<Arrow>().Activate(from.transform, to.transform);
+            
+            ArrowCreator.Instance.CreateArrow(from.mainHouse, to.mainHouse);
+
             acceptBtn.interactable = true;
         }
 
@@ -65,14 +59,12 @@ namespace SectorsSystem
             controlBtns.SetActive(false);
             MapScroll.Instance.isScrollActiveAboveUI = true;
             SectorsManager.Instance.EndMovingTroops();
+            ArrowCreator.Instance.DestroyArrow();
         }
 
         public void AcceptMove()
         {
             int troops = Convert.ToInt32(troopsSlider.value);
-            
-            Destroy(_currentArrow);
-            _currentArrow = null;
 
             from.troopsCount -= troops;
             
