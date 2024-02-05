@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace SectorsSystem
@@ -6,7 +7,7 @@ namespace SectorsSystem
     public class Sector : MonoBehaviour
     {
         public Transform mainHouse;
-        public Sector[] neighbourSectors;
+        public List<Sector> neighbourSectors;
         public int troopsCount;
 
         public bool isSectorOccupied;

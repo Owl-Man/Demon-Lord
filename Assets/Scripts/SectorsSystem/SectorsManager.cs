@@ -37,7 +37,8 @@ namespace SectorsSystem
         {
             if (SectorsTroopsMove.Instance.isMoveModeOn)
             {
-                if (sector == SectorsTroopsMove.Instance.GetFromSector()) return;
+                if (sector == SectorsTroopsMove.Instance.GetFromSector() ||
+                    !sector.neighbourSectors.Contains(SectorsTroopsMove.Instance.GetFromSector())) return;
                 
                 if (ChosenSector != null) ChosenSector.DisableSectorInteraction();
                 
