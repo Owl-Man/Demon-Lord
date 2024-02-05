@@ -18,8 +18,8 @@ public class FadeAnimation : MonoBehaviour
              " it is impossible to adjust only the fadingSubTime\n \nvalue > 0"), SerializeField]
     private float fadingStep = 0.01f;
 
-    [Tooltip("If disabled, the animation will be played completely regardless of the time scale." +
-             " If enabled, the animation will be affected by time scaling and" +
+    [Tooltip("If disabled, the animation will be affected by time scaling." +
+             " If enabled, the animation will be played completely regardless of the time scale and" +
              " setting fadingSubTime will not work"), SerializeField]
     private bool isFadeAnimByUpdateFrame;
     
