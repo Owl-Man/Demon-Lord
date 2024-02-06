@@ -42,7 +42,7 @@ namespace ArrowSystem
             transform.position = _to.mainHouse.position;
             transform.rotation = Quaternion.LookRotation(Vector3.forward, _to.mainHouse.position - _from.mainHouse.position);
         }
-
+        
         public void SetFrom(Sector from) => _from = from;
 
         public void SetTo(Sector to) => _to = to;
